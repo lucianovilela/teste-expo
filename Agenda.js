@@ -1,5 +1,5 @@
 import React, { cloneElement } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, ScrollViewComponent } from 'react-native';
 import { Icon, Text, Dialog } from '@rneui/themed';
 import Constants from 'expo-constants';
 
@@ -20,13 +20,7 @@ const EditItemDialog = ({ visible1, toggleDialog1, item }) => {
             onBackdropPress={toggleDialog1}
         >
             <Dialog.Title title="Dialog Title" />
-            <Text>
-                <Icon
-                    name='key'
-                    type='antdesign'
-                />
-                &nbsp;{item?.uid}
-            </Text>
+
             <Text>
                 <Icon
                     name='calendar'
@@ -57,7 +51,7 @@ export default function Agenda() {
         user: null,
         agenda: [],
     });
-    const [itemSel, setItemSel] = React.useState({});
+    const [itemSel, setItemSel] = React.useState(null);
 
 
     React.useEffect(() => {
@@ -89,47 +83,41 @@ export default function Agenda() {
                         data: Timestamp.fromDate(data.toDate()),
                     });
                     toggleDialog1();
-
-                    /*
-                    
-                    */
                 }}
 
             />
+          
+
             <FlatList
                 data={info.agenda}
                 renderItem={({ item }) => (
                     <View>
                         <TouchableOpacity onPress={(e) => {
                             deleteDoc(doc(firestore, `agenda/${item.uid}`))
-                                .catch((err) => console.log(err))
+                            .catch((err) => console.log(err))
                         }}>
                             <View style={{ marginBottom: 10 }}>
-
                                 <Text>
                                     <Icon
                                         name='key'
                                         type='antdesign'
-                                    />
+                                        />
                                     &nbsp;{item.uid}
                                 </Text>
                                 <Text>
                                     <Icon
                                         name='calendar'
                                         type='antdesign'
-                                    />
+                                        />
                                     &nbsp;{moment(item.data.seconds * 1000).format('LLL')}
                                 </Text>
-
                             </View>
 
                         </TouchableOpacity>
                     </View>)}
             />
-
-
+            
         </View>
-
     );
 }
 
