@@ -6,6 +6,7 @@ import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from
 import {  auth } from './firebase';
 import Agenda from './Agenda';
 
+import { ThemeProvider, createTheme } from '@rneui/themed';
 export default function App() {
   const [ info, setInfo ] = React.useState({user:undefined})
   React.useEffect(()=>{
@@ -15,13 +16,25 @@ export default function App() {
       setInfo({...info, user:user})
     })
   },[])
-  
+  const theme = createTheme({
+    lightColors: {
+      primary: 'red',
+    },
+    darkColors: {
+      primary: 'blue',
+    },
+    components: {
+      Button: {
+        raised: true,
+      },
+    },
+  });
   return (
-    <View style={styles.container}>
+    <ThemeProvider theme={theme}>
 
       <Agenda />
       <StatusBar style="auto" />
-    </View>
+    </ThemeProvider>
   );
 }
 
